@@ -35,6 +35,7 @@ class Project(
 
 See more details in the next chapters:
 
+---
 <a id="jpa-entities-not-null-instead-of-nullable"></a>
 ### Use @NotNull instead of @Column(nullable=false)
 <sup>`Rule-ID: jpa-entities-not-null-instead-of-nullable`</sup>
@@ -55,6 +56,7 @@ class Project(
 ) {}
 ````
 
+---
 <a id="jpa-entities-size-instead-of-length"></a>
 ### Use @Size instead of @Column(length=...)
 <sup>`Rule-ID: jpa-entities-size-instead-of-length`</sup>
@@ -76,6 +78,7 @@ class Project(
 ) {}
 ````
 
+---
 <a id="jpa-entities-no-column-names"></a>
 ### Don't use explicit column names 
 <sup>`Rule-ID: jpa-entities-no-column-names`</sup>
@@ -84,6 +87,7 @@ Avoid using explicit column names by using `@Column(name="my_column_name")`, use
 NamingStrategy instead. Exceptions might be that you need to access a legacy database where you have no control over
 the database scheme.
 
+--- 
 <a id="kotlin-jpa-nullable-flag-of-kotlin-needs-to-match-jpa-specification"></a>
 ### Kotlin nullability should match JPA nullability
 <sup>`Rule-ID: kotlin-jpa-nullable-flag-of-kotlin-needs-to-match-jpa-specification`</sup>
