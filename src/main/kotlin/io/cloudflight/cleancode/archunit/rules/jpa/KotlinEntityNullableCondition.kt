@@ -1,4 +1,4 @@
-package io.cloudflight.archunit.kotlin
+package io.cloudflight.cleancode.archunit.rules.jpa
 
 import com.tngtech.archunit.core.domain.JavaClass
 import com.tngtech.archunit.lang.ArchCondition
@@ -21,7 +21,7 @@ import kotlin.reflect.jvm.javaType
  * This condition ensures that all members of a Kotlin JPA entity match their kotlin nullability flag with the according
  * specification of JPA columns
  */
-class KotlinEntityNullableCondition :
+internal class KotlinEntityNullableCondition :
     ArchCondition<JavaClass>("have only members where the nullable flag of kotlin matches the JPA column specification") {
 
     override fun check(item: JavaClass, events: ConditionEvents) {

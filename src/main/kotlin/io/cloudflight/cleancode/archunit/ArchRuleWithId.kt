@@ -4,8 +4,8 @@ import com.tngtech.archunit.ArchConfiguration
 import com.tngtech.archunit.lang.ArchRule
 import com.tngtech.archunit.library.freeze.FreezingArchRule
 
-class ArchRuleWithId(val id: String, rule: ArchRule) :
-    ArchRule by rule.because("$URL#user-content-$id") {
+internal class ArchRuleWithId(val id: String, rule: ArchRule) :
+    ArchRule by rule.because(idToUrl(id)) {
 
     companion object {
         fun archRuleWithId(id: String, delegate: ArchRule): ArchRule {
@@ -16,8 +16,12 @@ class ArchRuleWithId(val id: String, rule: ArchRule) :
             }
         }
 
+        internal fun idToUrl(id:String):String {
+            return "$ROOT_URL/${id.substringBefore(".")}.md#user-content-${id.substringAfter(".")}"
+        }
+
         private val VERSION = "v${ArchRuleWithId::class.java.`package`.implementationVersion}"
-        private val URL = "https://github.com/cloudflightio/archunit-cleancode-verifier/blob/$VERSION/rules.md"
+        private val ROOT_URL = "https://github.com/cloudflightio/archunit-cleancode-verifier/blob/$VERSION/rules"
         private val FREEZE_ENABLED = true.toString() == ArchConfiguration.get().getPropertyOrDefault("cleancode.activate-freeze", false.toString())
     }
 }

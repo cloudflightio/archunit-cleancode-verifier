@@ -26,6 +26,14 @@ dependencies {
 
     compileOnly(libs.jakarta.persistence.api)
     compileOnly(libs.jakarta.validation.api)
+
+    testImplementation(libs.junit)
+    testImplementation(libs.junit.params)
+    testImplementation(libs.assertj)
+
+    testImplementation(libs.jakarta.persistence.api)
+    testImplementation(libs.jakarta.validation.api)
+
 }
 
 java {
