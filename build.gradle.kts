@@ -7,7 +7,6 @@ plugins {
 
 description = "ArchUnit Rules for various JVM frameworks"
 group = "io.cloudflight.cleancode.archunit"
-version = "0.0.1-SNAPSHOT"
 
 autoConfigure {
     java {
