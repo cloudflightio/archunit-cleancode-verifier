@@ -34,6 +34,7 @@ dependencies {
     testImplementation(libs.jakarta.persistence.api)
     testImplementation(libs.jakarta.validation.api)
 
+    testImplementation(libs.kotlin.logging)
 }
 
 java {

@@ -1,6 +1,6 @@
 [versions]
 
-junit="5.8.2"
+junit = "5.8.2"
 
 [libraries]
 archunit-junit5 = { module = "com.tngtech.archunit:archunit-junit5", version = "1.0.0-rc1" }
@@ -11,6 +11,8 @@ jakarta-validation-api = { module = "jakarta.validation:jakarta.validation-api",
 junit = { module = "org.junit.jupiter:junit-jupiter-engine", version.ref = "junit" }
 junit-params = { module = "org.junit.jupiter:junit-jupiter-params", version = "junit" }
 assertj = { module = "org.assertj:assertj-core", version = "3.23.1" }
+
+kotlin-logging = { module = "io.github.microutils:kotlin-logging", version = "1.7.9" }
 
 [bundles]
 
