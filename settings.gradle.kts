@@ -1,0 +1,1 @@
+rootProject.name = "archunit-cleancode-verifier"
