@@ -21,6 +21,8 @@ Those are grouped in:
 * [Extended Rules for the JDK](rules/jdk.md)
 * [Java Logging](rules/logging.md)
 * [Java Persistence Framework (JPA)](rules/jpa.md)
+* [Spring Framework (including Transcations & Spring Data)](rules/spring.md)
+* [Spring Boot](rules/springboot.md)
 
 # Usage
 
