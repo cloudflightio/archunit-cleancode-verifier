@@ -26,6 +26,12 @@ dependencies {
 
     compileOnly(libs.jakarta.persistence.api)
     compileOnly(libs.jakarta.validation.api)
+    compileOnly(libs.javax.transaction.api)
+    compileOnly(libs.spring.context)
+    compileOnly(libs.spring.tx)
+    compileOnly(libs.spring.web)
+    compileOnly(libs.spring.data.jpa)
+    compileOnly(libs.spring.boot)
 
     testImplementation(libs.junit)
     testImplementation(libs.junit.params)
@@ -33,6 +39,12 @@ dependencies {
 
     testImplementation(libs.jakarta.persistence.api)
     testImplementation(libs.jakarta.validation.api)
+    testImplementation(libs.javax.transaction.api)
+    testImplementation(libs.spring.context)
+    testImplementation(libs.spring.tx)
+    testImplementation(libs.spring.web)
+    testImplementation(libs.spring.data.jpa)
+    testImplementation(libs.spring.boot)
 
     testImplementation(libs.kotlin.logging)
 }
