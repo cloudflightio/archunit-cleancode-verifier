@@ -1,6 +1,8 @@
 package io.cloudflight.cleancode.archunit.rules.jdk
 
 import com.tngtech.archunit.core.importer.ClassFileImporter
+import io.cloudflight.cleancode.archunit.ArchRuleWithId
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.assertThrows
@@ -9,7 +11,13 @@ import java.math.MathContext
 
 class JdkRuleSetTest {
 
-    val rules = JdkRuleSet()
+    lateinit var rules: JdkRuleSet
+
+    @BeforeEach
+    fun initialize() {
+        ArchRuleWithId.FREEZE_ENABLED = false
+        rules = JdkRuleSet()
+    }
 
     @Test
     fun doNotThrowGenericExceptions() {
