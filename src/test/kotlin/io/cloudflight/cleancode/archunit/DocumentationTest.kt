@@ -2,9 +2,6 @@ package io.cloudflight.cleancode.archunit
 
 import com.tngtech.archunit.junit.ArchTest
 import com.tngtech.archunit.junit.ArchTests
-import io.cloudflight.cleancode.archunit.rules.jdk.JdkRuleSet
-import io.cloudflight.cleancode.archunit.rules.jpa.JpaRuleSet
-import io.cloudflight.cleancode.archunit.rules.logging.LoggingRuleSet
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.MethodSource
@@ -20,6 +17,9 @@ class DocumentationTest {
     @ParameterizedTest
     @MethodSource("classes")
     fun `all rules are explained in the documentation`(clazz: KClass<*>) {
+        // we need to deactivate freezing here, otherwise we can't access the ArchRuleWithId
+        // anymore, which will be a private delegate of the FreezingArchRule then
+        ArchRuleWithId.FREEZE_ENABLED = false
         val file = clazz.simpleName!!.lowercase().removeSuffix("ruleset")
         val ids = getArchTests(clazz)
             .map {
@@ -27,6 +27,7 @@ class DocumentationTest {
             }
         val headers = DocParser("rules/${file}.md").getHeaders().map { "${file}.${it}" }
         assertThat(ids).containsExactlyInAnyOrderElementsOf(headers)
+        ArchRuleWithId.FREEZE_ENABLED = true
     }
 
     companion object {
