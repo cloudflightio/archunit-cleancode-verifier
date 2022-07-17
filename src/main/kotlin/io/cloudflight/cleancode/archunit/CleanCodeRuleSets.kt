@@ -1,20 +1,26 @@
 package io.cloudflight.cleancode.archunit
 
 import com.tngtech.archunit.junit.ArchTest
-import com.tngtech.archunit.junit.ArchTests
-import io.cloudflight.cleancode.archunit.rules.jpa.JpaRuleSet
 import io.cloudflight.cleancode.archunit.rules.jdk.JdkRuleSet
+import io.cloudflight.cleancode.archunit.rules.jpa.JpaRuleSet
 import io.cloudflight.cleancode.archunit.rules.logging.LoggingRuleSet
+import io.cloudflight.cleancode.archunit.utils.ruleSetOf
 
 class CleanCodeRuleSets {
 
     @ArchTest
-    val jpa = ArchTests.`in`(JpaRuleSet::class.java)
+    val jpa = ruleSetOf(
+        JpaRuleSet::class.java,
+        requiredClasses = arrayOf(
+            "javax.persistence.Entity",
+            "javax.validation.constraints.NotNull"
+        )
+    )
 
     @ArchTest
-    val logging = ArchTests.`in`(LoggingRuleSet::class.java)
+    val logging = ruleSetOf(LoggingRuleSet::class.java)
 
     @ArchTest
-    val jdk = ArchTests.`in`(JdkRuleSet::class.java)
+    val jdk = ruleSetOf(JdkRuleSet::class.java)
 
 }
