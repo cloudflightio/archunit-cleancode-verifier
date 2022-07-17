@@ -20,12 +20,9 @@ import kotlin.io.path.*
  *
  * 1. we are using [ArchRuleWithId.id] as identifier for rules and take that as the file name to
  * store violations per rule
- * 2. the method [ViolationStore.contains] returns `true` for all [ArchRuleWithId] instances. That will
- * also help us later if we add additional rules to this library. In case they find violations,
- * those violations will fail and not automatically and silently end up in the store
- * 3. therefore, there is no need to set `freeze.store.default.allowStoreCreation` to `true`
- * 4. no `stored.rules` file is being created
- * 5. we don't store empty violation files and in turn delete them when they are empty
+ * 2. There is no need to set `freeze.store.default.allowStoreCreation` to `true`, it is always `true`
+ * 3. Instead of the `stored.rules` file we are using a `knownCleanCodeRules.txt` with a slightly different format
+ * 4. we don't store empty violation files and in turn delete them when they are empty
  *
  * Just like in the default implementation,
  *
@@ -37,25 +34,28 @@ import kotlin.io.path.*
  */
 internal object IdBasedViolationStore : ViolationStore {
 
+    private lateinit var knownRules: MutableSet<String>
     private var storeUpdateAllowed: Boolean = false
     private lateinit var storeFolder: Path
+    private lateinit var knownRulesFile: Path
 
     override fun initialize(properties: Properties) {
         storeUpdateAllowed = properties.getProperty("default.allowStoreUpdate", true.toString()).toBooleanStrict()
         storeFolder = Paths.get(properties.getProperty("default.path", "archunit_store")).also {
             it.createDirectories()
         }
+        knownRulesFile = storeFolder.resolve("knownCleanCodeRules.txt")
+        if (knownRulesFile.exists()) {
+            knownRules = knownRulesFile.readLines().toMutableSet()
+        } else {
+            knownRulesFile.createFile()
+            knownRules = mutableSetOf()
+        }
     }
 
     override fun contains(rule: ArchRule): Boolean {
         if (rule is ArchRuleWithId) {
-            // We don't store empty violation files and compared to the TextFileBasedViolationStore
-            // we also don't a keep stored.rules file, so we consider that every ArchRuleWithId
-            // is in the store.
-            // That will also help us later if we add additional rules to this library. In case
-            // they find violations, those violations will fail and not automatically and
-            // silently end up in the store
-            return true
+            return knownRules.contains(rule.id)
         } else {
             throw IllegalArgumentException("Expected ArchRuleWithId")
         }
@@ -68,6 +68,10 @@ internal object IdBasedViolationStore : ViolationStore {
             )
         }
         if (rule is ArchRuleWithId) {
+            if (!knownRules.contains(rule.id)) {
+                knownRules.add(rule.id)
+                knownRulesFile.appendLines(listOf(rule.id))
+            }
             val violationsFile = getViolationsFile(rule)
             if (violations.isNotEmpty()) {
                 violationsFile.writeLines(

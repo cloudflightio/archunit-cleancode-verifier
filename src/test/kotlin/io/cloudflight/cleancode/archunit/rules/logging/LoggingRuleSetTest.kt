@@ -1,15 +1,20 @@
 package io.cloudflight.cleancode.archunit.rules.logging
 
 import com.tngtech.archunit.core.importer.ClassFileImporter
+import io.cloudflight.cleancode.archunit.ArchRuleWithId
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.assertThrows
-import java.math.BigDecimal
-import java.math.MathContext
 
 class LoggingRuleSetTest {
 
-    val rules = LoggingRuleSet()
+    lateinit var rules: LoggingRuleSet
+
+    @BeforeEach
+    fun initialize() {
+        ArchRuleWithId.FREEZE_ENABLED = false
+        rules = LoggingRuleSet()
+    }
 
     @Test
     fun failOnPublicLogger1() {
