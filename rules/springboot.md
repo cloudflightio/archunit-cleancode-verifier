@@ -1,3 +1,5 @@
+# Clean Code Rules for the Spring Boot
+
 <a id="context-no-value-annotation"></a>
 ### Use @ConfigurationProperties instead of @Value
 <sup>`Rule-ID: springboot.context-no-value-annotation`</sup>
