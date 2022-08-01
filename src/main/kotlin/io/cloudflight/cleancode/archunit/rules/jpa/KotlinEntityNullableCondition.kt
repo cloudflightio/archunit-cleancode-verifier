@@ -10,6 +10,8 @@ import javax.persistence.GeneratedValue
 import javax.persistence.Id
 import javax.persistence.Inheritance
 import javax.persistence.InheritanceType
+import javax.validation.constraints.NotBlank
+import javax.validation.constraints.NotEmpty
 import javax.validation.constraints.NotNull
 import kotlin.reflect.KProperty
 import kotlin.reflect.KProperty1
@@ -59,6 +61,8 @@ internal class KotlinEntityNullableCondition :
         var nullable = defaultNullableFlagForType(memberProperty)
 
         findAnnotation<NotNull>(memberProperty) { false }?.let { nullable = it }
+        findAnnotation<NotBlank>(memberProperty) { false }?.let { nullable = it }
+        findAnnotation<NotEmpty>(memberProperty) { false }?.let { nullable = it }
         findAnnotation<Id>(memberProperty) { false }?.let { nullable = it }
         findAnnotation<GeneratedValue>(memberProperty) { nullableIfNotTypeLong(memberProperty) }?.let { nullable = it }
 
@@ -76,6 +80,7 @@ internal class KotlinEntityNullableCondition :
         return memberProperty.javaField?.getAnnotation(javax.persistence.EmbeddedId::class.java) != null
                 || memberProperty.javaField?.getAnnotation(javax.persistence.Embedded::class.java) != null
     }
+
     private fun isCollectionType(javaClass: Type): Boolean {
         return (javaClass as? ParameterizedType)
             ?.let { it.rawType as? Class<*> }
