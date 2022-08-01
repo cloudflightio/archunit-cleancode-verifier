@@ -1,4 +1,4 @@
-# Spring Framework
+# Clean Code Rules for the Spring Framework
 
 ## Context
 
