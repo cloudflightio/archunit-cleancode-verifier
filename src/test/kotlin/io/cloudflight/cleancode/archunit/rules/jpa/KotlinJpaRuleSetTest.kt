@@ -7,6 +7,9 @@ import org.junit.jupiter.api.assertThrows
 import java.util.*
 import javax.persistence.*
 import javax.validation.constraints.NotNull
+import javax.validation.constraints.NotBlank
+import javax.validation.constraints.NotEmpty
+
 
 internal class KotlinJpaRuleSetTest {
 
@@ -89,6 +92,19 @@ internal class KotlinJpaRuleSetTest {
         rules.nullable_flag_of_kotlin_needs_to_match_jpa_specification.check(importer)
     }
 
+
+    @Test
+    fun `project entity with NotEmpty specs should pass`() {
+        val importer = ClassFileImporter().importClasses(EntityWithNonNullableColumnAndNotEmptyAnnotation::class.java)
+        rules.nullable_flag_of_kotlin_needs_to_match_jpa_specification.check(importer)
+    }
+
+    @Test
+    fun `project entity with NonBlank specs should pass`() {
+        val importer = ClassFileImporter().importClasses(EntityWithNonNullableColumnAndNotBlankAnnotation::class.java)
+        rules.nullable_flag_of_kotlin_needs_to_match_jpa_specification.check(importer)
+    }
+
     @Test
     fun `oneToMany relation should not be checked at all`() {
         val importer = ClassFileImporter().importClasses(Person::class.java)
@@ -168,6 +184,22 @@ class EntityWithNonNullableColumnButNoAnnotation(
 )
 
 @Entity
+class EntityWithNonNullableColumnAndNotEmptyAnnotation(
+    @Id
+    val id: Long = 0,
+    @field:NotEmpty
+    val x: String
+)
+
+@Entity
+class EntityWithNonNullableColumnAndNotBlankAnnotation(
+    @Id
+    val id: Long = 0,
+    @field:NotBlank
+    val x: String
+)
+
+@Entity
 class Person(
     @Id
     val id: Long = 0,
@@ -195,7 +227,7 @@ data class EntityWithNullableEmbeddable(
 )
 
 @Embeddable
-data class Budget (
+data class Budget(
     @field:NotNull
     var value: Double
 )
