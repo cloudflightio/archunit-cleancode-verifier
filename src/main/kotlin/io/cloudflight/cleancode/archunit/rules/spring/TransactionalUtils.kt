@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional
 class NotBeTransactional :
     ArchCondition<JavaCodeUnit>("not be annotated with @Transactional") {
     override fun check(item: JavaCodeUnit, events: ConditionEvents) {
-        if (TransactionalHelper.isTransactional(item,  checkOwner = true)) {
+        if (TransactionalHelper.isTransactional(item, checkOwner = true)) {
             events.add(
                 SimpleConditionEvent.violated(
                     item,
@@ -91,20 +91,34 @@ object JavaMethodHelper {
     private fun AccessTarget.CodeUnitCallTarget.filterForCallLoops(
         list: MutableList<JavaCodeUnit>,
         currentMethodCalls: List<JavaCodeUnit>
-    ): List<JavaCodeUnit> = listOf(this.resolveMember().get()).filter { javaCodeUnit ->
-        !list.contains(javaCodeUnit) ||
-                (currentMethodCalls.count { it == javaCodeUnit } > 1
-                        && list.count { it == javaCodeUnit } < currentMethodCalls.count { it == javaCodeUnit }
-                        )
+    ): List<JavaCodeUnit> {
+        val member = this.resolveMember()
+        if (member.isPresent) {
+            return listOf(member.get()).filter { javaCodeUnit ->
+                !list.contains(javaCodeUnit) ||
+                        (currentMethodCalls.count { it == javaCodeUnit } > 1
+                                && list.count { it == javaCodeUnit } < currentMethodCalls.count { it == javaCodeUnit }
+                                )
+
+            }
+        } else {
+            return emptyList()
+        }
     }
 
 }
 
 
 object TransactionalHelper {
-    fun isTransactional(accessTarget: AccessTarget): Boolean =
-        accessTarget is AccessTarget.MethodCallTarget
-                && isTransactional(accessTarget.resolveMember().get(), checkOwner = true, checkSubClasses = true)
+    fun isTransactional(accessTarget: AccessTarget): Boolean {
+        return if (accessTarget.resolveMember().isPresent) {
+            (accessTarget is AccessTarget.MethodCallTarget
+                    && isTransactional(accessTarget.resolveMember().get(), checkOwner = true, checkSubClasses = true))
+        } else {
+            false
+        }
+    }
+
 
     @Suppress("ReturnCount")
     fun isTransactional(
@@ -123,26 +137,15 @@ object TransactionalHelper {
     fun isTransactional(codeUnit: JavaClass): Boolean =
         codeUnit.isAnnotatedOrMetaAnnotatedWithTransactional()
 
-    fun isJavaxTransactional(codeUnit: JavaClass): Boolean =
-        codeUnit.isAnnotatedOrMetaAnnotatedWithJavaxTransactional()
-
-    fun isJavaxTransactional(codeUnits: Set<JavaCodeUnit>): Boolean =
-        codeUnits.any { it.isAnnotatedOrMetaAnnotatedWithJavaxTransactional() }
-
     private fun JavaCodeUnit.isAnnotatedOrMetaAnnotatedWithTransactional() =
         this.isAnnotatedWith(TransactionalAnnotation()) || this.isMetaAnnotatedWith(TransactionalAnnotation())
 
-    private fun JavaCodeUnit.isAnnotatedOrMetaAnnotatedWithJavaxTransactional() =
-        this.isAnnotatedWith(JavaxTransactionalAnnotation()) || this.isMetaAnnotatedWith(JavaxTransactionalAnnotation())
 
     private fun JavaCodeUnit.isOwnerAnnotatedOrMetaAnnotatedWithTransactional() =
         this.owner.isAnnotatedWith(TransactionalAnnotation()) || this.owner.isMetaAnnotatedWith(TransactionalAnnotation())
 
     private fun JavaClass.isAnnotatedOrMetaAnnotatedWithTransactional() =
         this.isAnnotatedWith(TransactionalAnnotation()) || this.isMetaAnnotatedWith(TransactionalAnnotation())
-
-    private fun JavaClass.isAnnotatedOrMetaAnnotatedWithJavaxTransactional() =
-        this.isAnnotatedWith(JavaxTransactionalAnnotation()) || this.isMetaAnnotatedWith(JavaxTransactionalAnnotation())
 
     class TransactionalAnnotation : DescribedPredicate<JavaAnnotation<*>>("") {
         override fun test(input: JavaAnnotation<*>): Boolean =
@@ -166,7 +169,11 @@ object TransactionalHelper {
     }
 
     private fun JavaCodeUnit.getOverriddenMethodFromSubclass(subClass: JavaClass) =
-        subClass.methods.find { it.name == this.name && HasName.Utils.namesOf(it.rawParameterTypes) == HasName.Utils.namesOf(this.rawParameterTypes) }
+        subClass.methods.find {
+            it.name == this.name && HasName.Utils.namesOf(it.rawParameterTypes) == HasName.Utils.namesOf(
+                this.rawParameterTypes
+            )
+        }
 
 
     private fun ifArchUnitVerifierPluginContainsOwnerGetAllSubClassesOfOwner(
@@ -178,7 +185,6 @@ object TransactionalHelper {
         isTransactional(this.target)
                 || this.target.owner.isAssignableTo(Repository::class.java)
 
-                // https://jira.cloudflight.io/browse/CCV-109
                 // unfortunately we cannot extract Kotlin extension functions correctly with ArchUnit, the only way
                 // here is to reference to the CrudRepositoryExtensionsKt for this specific case, but it won't work
                 // for all other extension functions

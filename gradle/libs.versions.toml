@@ -28,6 +28,6 @@ spring-boot = { module = "org.springframework.boot:spring-boot", version.ref = "
 [bundles]
 
 [plugins]
-autoconfigure = { id = "io.cloudflight.autoconfigure-gradle", version = "0.5.3" }
+autoconfigure = { id = "io.cloudflight.autoconfigure-gradle", version = "0.6.1" }
 nexuspublish = { id = "io.github.gradle-nexus.publish-plugin", version = "1.1.0" }
 
