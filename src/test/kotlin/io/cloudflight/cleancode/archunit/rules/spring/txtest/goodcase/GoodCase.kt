@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.RestController
 import java.util.*
 import javax.persistence.Entity
 import javax.persistence.Id
@@ -195,5 +196,23 @@ class ServiceCallingCacheEvict(private val serviceWithCacheEvict: ServiceWithCac
 class ServiceCallingCacheable(private val serviceWithCacheable: ServiceWithCacheable) {
     fun cacheEvictFunction() {
         this.serviceWithCacheable.cacheableFunction()
+    }
+}
+
+class SomeService() {
+    fun something() {
+        val enumValues = Test.values()
+        println(enumValues)
+    }
+}
+
+enum class Test {
+    Test1, Test2;
+}
+
+@RestController
+class SomeController(private val someService: SomeService) {
+    fun test() {
+        someService.something()
     }
 }
