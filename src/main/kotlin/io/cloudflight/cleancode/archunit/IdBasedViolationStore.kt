@@ -39,14 +39,36 @@ internal object IdBasedViolationStore : ViolationStore {
     private lateinit var storeFolder: Path
     private lateinit var knownRulesFile: Path
 
+    internal const val KNOWN_CLEAN_CODE_RULES_FILE = "knownCleanCodeRules.txt"
+
+    /**
+     * A set of all rules that were once here in this library but have been removed over time.
+     * We clean up existing stores based on that list.
+     */
+    private val REMOVED_RULES = setOf(
+        "spring.tx-transactional-methods-should-not-be-cacheable"
+    )
+
     override fun initialize(properties: Properties) {
         storeUpdateAllowed = properties.getProperty("default.allowStoreUpdate", true.toString()).toBooleanStrict()
         storeFolder = Paths.get(properties.getProperty("default.path", "archunit_store")).also {
             it.createDirectories()
         }
-        knownRulesFile = storeFolder.resolve("knownCleanCodeRules.txt")
+        knownRulesFile = storeFolder.resolve(KNOWN_CLEAN_CODE_RULES_FILE)
         if (knownRulesFile.exists()) {
-            knownRules = knownRulesFile.readLines().toMutableSet()
+            val fileContent = knownRulesFile.readLines().toMutableList()
+            var removedRules = false
+            REMOVED_RULES.forEach { removedRule ->
+                if (fileContent.contains(removedRule)) {
+                    fileContent.remove(removedRule)
+                    getViolationsFile(removedRule).deleteIfExists()
+                    removedRules = true
+                }
+            }
+            if (removedRules) {
+                knownRulesFile.writeLines(fileContent, Charsets.UTF_8)
+            }
+            knownRules = fileContent.toMutableSet()
         } else {
             knownRulesFile.createFile()
             knownRules = mutableSetOf()
@@ -81,9 +103,7 @@ internal object IdBasedViolationStore : ViolationStore {
                     StandardOpenOption.TRUNCATE_EXISTING
                 )
             } else {
-                if (violationsFile.exists()) {
-                    violationsFile.deleteExisting()
-                }
+                violationsFile.deleteIfExists()
             }
         } else {
             throw IllegalArgumentException("Expected ArchRuleWithId")
@@ -104,6 +124,9 @@ internal object IdBasedViolationStore : ViolationStore {
     }
 
     private fun getViolationsFile(rule: ArchRuleWithId): Path {
-        return storeFolder.resolve(rule.id)
+        return getViolationsFile(rule.id)
+    }
+    private fun getViolationsFile(ruleId: String): Path {
+        return storeFolder.resolve(ruleId)
     }
 }
