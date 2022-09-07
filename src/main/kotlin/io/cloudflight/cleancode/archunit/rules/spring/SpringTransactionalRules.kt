@@ -69,14 +69,6 @@ class SpringTransactionalRules {
         )
 
 
-    @ArchTest
-    val methods_that_are_transactional_should_not_be_cacheable =
-        archRuleWithId(
-            "spring.tx-transactional-methods-should-not-be-cacheable",
-            methods()
-                .that(AreTransactional())
-                .should(NotBeCacheable())
-        )
 
     private class NotBeCacheable :
         ArchCondition<JavaMethod>("not be annotated with @Cacheable") {

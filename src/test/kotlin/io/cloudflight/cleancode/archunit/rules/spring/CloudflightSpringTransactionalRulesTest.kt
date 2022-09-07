@@ -44,8 +44,6 @@ class CloudflightSpringTransactionalRulesTest {
             assertThat(e.message!!.split("\n").size).isEqualTo(3)
         }
 
-
-        rules.methods_that_are_transactional_should_not_be_cacheable.check(importerGoodCases)
         rulesRepository.repository_methods_should_only_be_accessed_by_transactional_methods.check(importerGoodCases)
     }
 
@@ -76,11 +74,6 @@ class CloudflightSpringTransactionalRulesTest {
 
         assertThrows<AssertionError> {
             rulesRepository.methods_that_are_transactional_should_access_other_transactional_methods_or_repositories
-                .check(importerBadCases)
-        }
-
-        assertThrows<AssertionError> {
-            rules.methods_that_are_transactional_should_not_be_cacheable
                 .check(importerBadCases)
         }
 

@@ -106,17 +106,6 @@ Whenever you access the database via Spring Data repositories, ensure you are wi
 from a method that is annotated with `@Transactional`) to ensure ACID criteria when reading data from the DB. In case
 you are only reading from the database (and not writing), consider to use `@Transactional(readOnly=true)`
 
-<a id="tx-transactional-methods-should-not-be-cacheable"></a>
-### Functions should not be  @Transactional and @Cacheable
-<sup>`Rule-ID: spring.tx-transactional-methods-should-not-be-cacheable`</sup>
-
-The `@Cacheable` Annotation enables a caching optimization for the corresponding function call.
-When applied the function may return a cached result from an earlier call, instead of actually evaluating the function.
-Hence, a `@Cacheable` function should not have side effects!
-
-The `@Transactional` annotation opens database transactions.
-Transactions bundle several write operations so that they apply atomically. In case of an error, they will be rolled back collectively.
-
 <a id="tx-do-not-throw-exceptions"></a>
 ### @Transactional annotated methods must not throw checked exceptions
 <sup>`Rule-ID: spring.tx-do-not-throw-exceptions`</sup>
