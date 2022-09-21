@@ -6,10 +6,7 @@ import com.tngtech.archunit.lang.ConditionEvents
 import com.tngtech.archunit.lang.SimpleConditionEvent
 import java.lang.reflect.ParameterizedType
 import java.lang.reflect.Type
-import javax.persistence.GeneratedValue
-import javax.persistence.Id
-import javax.persistence.Inheritance
-import javax.persistence.InheritanceType
+import javax.persistence.*
 import javax.validation.constraints.NotBlank
 import javax.validation.constraints.NotEmpty
 import javax.validation.constraints.NotNull
@@ -65,7 +62,7 @@ internal class KotlinEntityNullableCondition :
         findAnnotation<NotEmpty>(memberProperty) { false }?.let { nullable = it }
         findAnnotation<Id>(memberProperty) { false }?.let { nullable = it }
         findAnnotation<GeneratedValue>(memberProperty) { nullableIfNotTypeLong(memberProperty) }?.let { nullable = it }
-
+        findAnnotation<ManyToOne>(memberProperty) { manyToOne -> manyToOne.optional }?.let { nullable = it }
         return nullable
     }
 

@@ -7,6 +7,7 @@ import java.time.OffsetDateTime
 import javax.persistence.Column
 import javax.persistence.Entity
 import javax.persistence.Id
+import javax.persistence.ManyToOne
 import javax.validation.constraints.NotNull
 import javax.validation.constraints.Size
 
@@ -52,6 +53,25 @@ class JpaRuleSetTest {
         rules.do_not_use_column_length.check(importer)
     }
 
+    @Test
+    fun `non-optional relationship annotations`() {
+        val importer = ClassFileImporter().importClasses(EntityWithJoinToOtherEntity::class.java)
+        rules.nullable_flag_of_kotlin_needs_to_match_jpa_specification.check(importer)
+    }
+
+    @Test
+    fun `optional relationship annotations`() {
+        val importer = ClassFileImporter().importClasses(EntityWithJoinToOtherOptionalEntity::class.java)
+        rules.nullable_flag_of_kotlin_needs_to_match_jpa_specification.check(importer)
+    }
+
+    @Test
+    fun `optional errnonous relationship annotations`() {
+        val importer = ClassFileImporter().importClasses(EntityWithJoinToOtherOptionalErronousEntity::class.java)
+        assertThrows<AssertionError> {
+            rules.nullable_flag_of_kotlin_needs_to_match_jpa_specification.check(importer)
+        }
+    }
 }
 
 @Entity
@@ -104,4 +124,28 @@ class EntityWithColumnLength(
     val id: Long = 0,
     @Column(length = 10)
     val x: String
+)
+
+@Entity
+class EntityWithJoinToOtherEntity(
+    @Id
+    val id: Long = 0,
+    @ManyToOne(optional = false)
+    var someEntity: EntityWithColumnLength
+)
+
+@Entity
+class EntityWithJoinToOtherOptionalEntity(
+    @Id
+    val id: Long = 0,
+    @ManyToOne(optional = true)
+    var someEntity: EntityWithColumnLength?
+)
+
+@Entity
+class EntityWithJoinToOtherOptionalErronousEntity(
+    @Id
+    val id: Long = 0,
+    @ManyToOne(optional = false)
+    var someEntity: EntityWithColumnLength?
 )
