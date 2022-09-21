@@ -4,10 +4,7 @@ import com.tngtech.archunit.core.importer.ClassFileImporter
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import java.time.OffsetDateTime
-import javax.persistence.Column
-import javax.persistence.Entity
-import javax.persistence.Id
-import javax.persistence.ManyToOne
+import javax.persistence.*
 import javax.validation.constraints.NotNull
 import javax.validation.constraints.Size
 
@@ -71,6 +68,12 @@ class JpaRuleSetTest {
         assertThrows<AssertionError> {
             rules.nullable_flag_of_kotlin_needs_to_match_jpa_specification.check(importer)
         }
+    }
+
+    @Test
+    fun `nullable column with element collection`() {
+        val importer = ClassFileImporter().importClasses(EntityWithFiles::class.java)
+        rules.do_not_use_column_nullable.check(importer)
     }
 }
 
@@ -149,3 +152,18 @@ class EntityWithJoinToOtherOptionalErronousEntity(
     @ManyToOne(optional = false)
     var someEntity: EntityWithColumnLength?
 )
+
+
+class EntityWithFiles {
+    @ElementCollection
+    @CollectionTable(
+        name = "some_entity_file",
+        joinColumns = [JoinColumn(name = "some_entity_id")],
+        uniqueConstraints = [UniqueConstraint(name = "unique_some_entity_file_id", columnNames = ["file_id"])]
+    )
+    @Column(name = "file_id", nullable = false)
+    var someFiles = mutableSetOf<FileReference>()
+}
+
+@Entity
+class FileReference
