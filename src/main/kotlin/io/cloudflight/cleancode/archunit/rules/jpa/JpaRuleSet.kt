@@ -10,6 +10,7 @@ import com.tngtech.archunit.lang.syntax.ArchRuleDefinition.fields
 import io.cloudflight.cleancode.archunit.ArchRuleWithId.Companion.archRuleWithId
 import io.cloudflight.cleancode.archunit.utils.AreKotlinClasses
 import javax.persistence.Column
+import javax.persistence.ElementCollection
 import kotlin.reflect.KProperty1
 
 class JpaRuleSet {
@@ -18,7 +19,9 @@ class JpaRuleSet {
     val do_not_use_column_nullable =
         archRuleWithId(
             "jpa.entities-not-null-instead-of-nullable",
-            fields().should(NotUseTheAnnotationField(Column::nullable))
+            fields().that()
+                .areNotAnnotatedWith(ElementCollection::class.java)
+                .should(NotUseTheAnnotationField(Column::nullable))
         )
 
     @ArchTest
