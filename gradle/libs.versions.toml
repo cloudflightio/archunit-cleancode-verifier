@@ -6,7 +6,7 @@ springboot = "2.7.1"
 springdata = "2.3.6.RELEASE"
 
 [libraries]
-archunit-junit5 = { module = "com.tngtech.archunit:archunit-junit5", version = "1.0.0-rc1" }
+archunit-junit5 = { module = "com.tngtech.archunit:archunit-junit5", version = "1.0.0" }
 
 jakarta-persistence-api = { module = "jakarta.persistence:jakarta.persistence-api", version = "2.2.3" }
 jakarta-validation-api = { module = "jakarta.validation:jakarta.validation-api", version = "2.0.2" }
