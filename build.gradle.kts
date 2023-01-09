@@ -1,5 +1,4 @@
 plugins {
-    alias(libs.plugins.autoconfigure)
     `maven-publish`
     alias(libs.plugins.nexuspublish)
     signing
