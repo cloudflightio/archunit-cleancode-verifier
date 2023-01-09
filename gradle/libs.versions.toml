@@ -2,11 +2,11 @@
 
 junit = "5.8.2"
 spring = "5.2.12.RELEASE"
-springboot = "2.7.1"
+springboot = "2.7.7"
 springdata = "2.3.6.RELEASE"
 
 [libraries]
-archunit-junit5 = { module = "com.tngtech.archunit:archunit-junit5", version = "1.0.0" }
+archunit-junit5 = { module = "com.tngtech.archunit:archunit-junit5", version = "1.0.1" }
 
 jakarta-persistence-api = { module = "jakarta.persistence:jakarta.persistence-api", version = "2.2.3" }
 jakarta-validation-api = { module = "jakarta.validation:jakarta.validation-api", version = "2.0.2" }
@@ -28,6 +28,5 @@ spring-boot = { module = "org.springframework.boot:spring-boot", version.ref = "
 [bundles]
 
 [plugins]
-autoconfigure = { id = "io.cloudflight.autoconfigure-gradle", version = "0.6.1" }
 nexuspublish = { id = "io.github.gradle-nexus.publish-plugin", version = "1.1.0" }
 
