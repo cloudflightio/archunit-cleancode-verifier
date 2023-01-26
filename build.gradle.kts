@@ -9,7 +9,7 @@ group = "io.cloudflight.cleancode.archunit"
 
 autoConfigure {
     java {
-        languageVersion.set(JavaLanguageVersion.of(8))
+        languageVersion.set(JavaLanguageVersion.of(17))
         vendorName.set("Cloudflight")
     }
 }
@@ -25,7 +25,7 @@ dependencies {
 
     compileOnly(libs.jakarta.persistence.api)
     compileOnly(libs.jakarta.validation.api)
-    compileOnly(libs.javax.transaction.api)
+    compileOnly(libs.jakarta.transaction.api)
     compileOnly(libs.spring.context)
     compileOnly(libs.spring.tx)
     compileOnly(libs.spring.web)
@@ -38,7 +38,7 @@ dependencies {
 
     testImplementation(libs.jakarta.persistence.api)
     testImplementation(libs.jakarta.validation.api)
-    testImplementation(libs.javax.transaction.api)
+    testImplementation(libs.jakarta.transaction.api)
     testImplementation(libs.spring.context)
     testImplementation(libs.spring.tx)
     testImplementation(libs.spring.web)

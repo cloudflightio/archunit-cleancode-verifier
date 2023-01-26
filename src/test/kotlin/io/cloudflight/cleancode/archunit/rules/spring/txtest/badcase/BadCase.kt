@@ -9,8 +9,8 @@ import org.springframework.stereotype.Controller
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.bind.annotation.GetMapping
-import javax.persistence.Entity
-import javax.persistence.Id
+import jakarta.persistence.Entity
+import jakarta.persistence.Id
 import io.cloudflight.cleancode.archunit.rules.spring.txtest.goodcase.MyRepository as GoodcaseRepository
 import io.cloudflight.cleancode.archunit.rules.spring.txtest.goodcase.Service as GoodcaseService
 
@@ -107,16 +107,16 @@ class BadEntity(
 
 
 @Service
-class ServiceWithJavaxTransactional {
+class ServiceWithJakartaTransactional {
 
-    @javax.transaction.Transactional
-    fun javaxTransactionalFunction() {
+    @jakarta.transaction.Transactional
+    fun jakartaTransactionalFunction() {
     }
 }
 
-@javax.transaction.Transactional
+@jakarta.transaction.Transactional
 @Service
-class ServicAsJavaxTransactional {}
+class ServicAsJakartaTransactional {}
 
 @Service
 class ServiceWithCacheable {

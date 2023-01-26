@@ -14,8 +14,8 @@ class CleanCodeRuleSets {
     val jpa = ruleSetOf(
         JpaRuleSet::class.java,
         requiredClasses = arrayOf(
-            "javax.persistence.Entity",
-            "javax.validation.constraints.NotNull"
+            "jakarta.persistence.Entity",
+            "jakarta.validation.constraints.NotNull"
         )
     )
 

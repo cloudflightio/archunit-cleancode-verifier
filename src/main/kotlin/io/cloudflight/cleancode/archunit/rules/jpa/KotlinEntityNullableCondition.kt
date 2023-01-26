@@ -6,10 +6,10 @@ import com.tngtech.archunit.lang.ConditionEvents
 import com.tngtech.archunit.lang.SimpleConditionEvent
 import java.lang.reflect.ParameterizedType
 import java.lang.reflect.Type
-import javax.persistence.*
-import javax.validation.constraints.NotBlank
-import javax.validation.constraints.NotEmpty
-import javax.validation.constraints.NotNull
+import jakarta.persistence.*
+import jakarta.validation.constraints.NotBlank
+import jakarta.validation.constraints.NotEmpty
+import jakarta.validation.constraints.NotNull
 import kotlin.reflect.KProperty
 import kotlin.reflect.KProperty1
 import kotlin.reflect.full.*
@@ -74,8 +74,8 @@ internal class KotlinEntityNullableCondition :
 
 
     private fun isEmbeddable(memberProperty: KProperty1<out Any, Any?>): Boolean {
-        return memberProperty.javaField?.getAnnotation(javax.persistence.EmbeddedId::class.java) != null
-                || memberProperty.javaField?.getAnnotation(javax.persistence.Embedded::class.java) != null
+        return memberProperty.javaField?.getAnnotation(jakarta.persistence.EmbeddedId::class.java) != null
+                || memberProperty.javaField?.getAnnotation(jakarta.persistence.Embedded::class.java) != null
     }
 
     private fun isCollectionType(javaClass: Type): Boolean {

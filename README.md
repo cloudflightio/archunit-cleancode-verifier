@@ -112,3 +112,7 @@ java.lang.AssertionError: Architecture Violation [Priority: MEDIUM] - Rule 'clas
 Click on the link there and get to a detailled description of the violation including code samples. We believe
 it's important for developers to understand the background of such issues and that usually can't be placed
 into a single short String.
+
+# Requirements
+
+This library requires at least JDK 17 and it is built on top of Spring Boot 3 and Jakarta EE 9

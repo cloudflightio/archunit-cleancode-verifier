@@ -13,9 +13,9 @@ import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RestController
 import java.util.*
-import javax.persistence.Entity
-import javax.persistence.Id
-import javax.validation.constraints.NotNull
+import jakarta.persistence.Entity
+import jakarta.persistence.Id
+import jakarta.validation.constraints.NotNull
 
 @Controller
 class Controller(
@@ -146,7 +146,7 @@ class GoodEntity(
 
 
 @Service
-class ServiceWithoutJavaxTransactional(private val repo: MyRepository) {
+class ServiceWithoutJakartaTransactional(private val repo: MyRepository) {
 
     @Transactional
     fun callRepo() {

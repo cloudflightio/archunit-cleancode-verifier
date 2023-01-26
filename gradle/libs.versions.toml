@@ -1,16 +1,16 @@
 [versions]
 
 junit = "5.8.2"
-spring = "5.2.12.RELEASE"
-springboot = "2.7.7"
-springdata = "2.3.6.RELEASE"
+spring = "6.0.3"
+springboot = "3.0.2"
+springdata = "3.0.0"
 
 [libraries]
 archunit-junit5 = { module = "com.tngtech.archunit:archunit-junit5", version = "1.0.1" }
 
-jakarta-persistence-api = { module = "jakarta.persistence:jakarta.persistence-api", version = "2.2.3" }
-jakarta-validation-api = { module = "jakarta.validation:jakarta.validation-api", version = "2.0.2" }
-javax-transaction-api = { module = "javax.transaction:javax.transaction-api", version = "1.3" }
+jakarta-persistence-api = { module = "jakarta.persistence:jakarta.persistence-api", version = "3.1.0" }
+jakarta-validation-api = { module = "jakarta.validation:jakarta.validation-api", version = "3.0.2" }
+jakarta-transaction-api = { module = "jakarta.transaction:jakarta.transaction-api", version = "2.0.1" }
 
 junit = { module = "org.junit.jupiter:junit-jupiter-engine", version.ref = "junit" }
 junit-params = { module = "org.junit.jupiter:junit-jupiter-params", version = "junit" }

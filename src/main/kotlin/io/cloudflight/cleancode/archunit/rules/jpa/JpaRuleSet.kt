@@ -9,8 +9,8 @@ import com.tngtech.archunit.lang.syntax.ArchRuleDefinition
 import com.tngtech.archunit.lang.syntax.ArchRuleDefinition.fields
 import io.cloudflight.cleancode.archunit.ArchRuleWithId.Companion.archRuleWithId
 import io.cloudflight.cleancode.archunit.utils.AreKotlinClasses
-import javax.persistence.Column
-import javax.persistence.ElementCollection
+import jakarta.persistence.Column
+import jakarta.persistence.ElementCollection
 import kotlin.reflect.KProperty1
 
 class JpaRuleSet {
