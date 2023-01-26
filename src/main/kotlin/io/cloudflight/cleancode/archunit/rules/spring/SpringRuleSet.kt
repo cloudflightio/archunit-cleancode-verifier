@@ -10,7 +10,6 @@ import com.tngtech.archunit.lang.ConditionEvents
 import com.tngtech.archunit.lang.SimpleConditionEvent
 import com.tngtech.archunit.lang.syntax.ArchRuleDefinition.classes
 import io.cloudflight.cleancode.archunit.ArchRuleWithId.Companion.archRuleWithId
-import io.cloudflight.cleancode.archunit.rules.springboot.SpringBootRuleSet
 import io.cloudflight.cleancode.archunit.utils.ruleSetOf
 import org.springframework.stereotype.Component
 
@@ -50,10 +49,10 @@ class SpringRuleSet {
     }
 
     @ArchTest
-    val javaxTransactional = ruleSetOf(
-        JavaxTransactionalRules::class.java,
+    val jakartaTransactional = ruleSetOf(
+        JakartaTransactionalRules::class.java,
         requiredClasses = arrayOf(
-            "javax.transaction.Transactional"
+            "jakarta.transaction.Transactional"
         )
     )
 

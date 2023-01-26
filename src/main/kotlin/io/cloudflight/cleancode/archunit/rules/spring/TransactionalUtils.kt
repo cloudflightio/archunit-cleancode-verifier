@@ -153,9 +153,9 @@ object TransactionalHelper {
                 ?.let { it.propagation != Propagation.NEVER } ?: false
     }
 
-    class JavaxTransactionalAnnotation : DescribedPredicate<JavaAnnotation<*>>("") {
+    class JakartaTransactionalAnnotation : DescribedPredicate<JavaAnnotation<*>>("") {
         override fun test(input: JavaAnnotation<*>): Boolean =
-            input.toAnnotation(javax.transaction.Transactional::class.java) != null
+            input.toAnnotation(jakarta.transaction.Transactional::class.java) != null
     }
 
     private fun JavaMethod.checkOtherImplementationsIfTransactional(

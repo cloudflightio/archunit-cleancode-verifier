@@ -96,15 +96,15 @@ internal class TransactionalHelperTest {
     }
 
     @Test
-    fun `(TransactionalAnnotation apply) should return True if a class with JavaxTransactional Annotation is processed`() {
+    fun `(TransactionalAnnotation apply) should return True if a class with JakartaTransactional Annotation is processed`() {
         val testClass = ClassFileImporter().importClass(MyRepository5::class.java)
-        assertTrue(testClass.isAnnotatedWith(TransactionalHelper.JavaxTransactionalAnnotation()))
+        assertTrue(testClass.isAnnotatedWith(TransactionalHelper.JakartaTransactionalAnnotation()))
     }
 
     @Test
-    fun `(TransactionalAnnotation apply) should return False if a class without JavaxTransactional Annotation is processed`() {
+    fun `(TransactionalAnnotation apply) should return False if a class without JakartaTransactional Annotation is processed`() {
         val testClass = ClassFileImporter().importClass(MyRepository3::class.java)
-        assertFalse(testClass.isAnnotatedWith(TransactionalHelper.JavaxTransactionalAnnotation()))
+        assertFalse(testClass.isAnnotatedWith(TransactionalHelper.JakartaTransactionalAnnotation()))
     }
 
 
@@ -185,7 +185,7 @@ open class MyRepository4Impl : MyRepository4 {
     }
 }
 
-@javax.transaction.Transactional
+@jakarta.transaction.Transactional
 interface MyRepository5 {
     fun foo()
 }

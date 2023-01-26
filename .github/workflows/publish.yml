@@ -1,43 +1,57 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/SchemaStore/schemastore/master/src/schemas/json/github-workflow.json
-
-name: Release
+name: Publish to Maven Central
 
 on:
-  push:
-    tags:
-      - "v[0-9]+.[0-9]+.[0-9]+"
+  workflow_dispatch:
+    inputs:
+      stage:
+        description: 'the stage of the version'
+        required: true
+        default: 'rc'
+        type: choice
+        options:
+          - rc
+          - final
 
 jobs:
-  build:
-    name: Publish
+  publish:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
-
     steps:
-      - uses: actions/checkout@v2
-      - name: Setup current release version from tag
-        id: release_version
-        if: startsWith(github.ref, 'refs/tags/')
-        run: echo ::set-output name=release_version::${GITHUB_REF:11}
-      - name: Prepare gradle version param
-        id: version_param
-        run: echo ::set-output name=version_param::${{ (steps.release_version.outputs.release_version != null && format('-Pversion={0}', steps.release_version.outputs.release_version)) || '' }}
-      - name: Setup Java
-        uses: actions/setup-java@v2
+      - name: Clone repository
+        uses: actions/checkout@v3
         with:
-          distribution: "temurin"
-          java-version: "8"
-      - name: Validate Gradle Wrapper
+          fetch-depth: 0
+      - name: Set up Java
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+      - name: Validate Gradle wrapper
         uses: gradle/wrapper-validation-action@v1
-      - name: Setup Gradle
-        uses: gradle/gradle-build-action@v2
-      - name: Publish
+      - name : Retrieve module version from Reckon
+        run: echo "VERSION_NAME=$(${{github.workspace}}/gradlew -q clfPrintVersion -Preckon.stage=${{ inputs.stage }})" >> $GITHUB_OUTPUT
+        id: retrieve_version
+      - name: Publish module version to Github Step Summary
+        run: |
+          echo "# ${{steps.retrieve_version.outputs.VERSION_NAME}}" >> $GITHUB_STEP_SUMMARY
+      - name: Publish and Create Tag
         uses: gradle/gradle-build-action@v2
         with:
-          arguments: publishToSonatype closeAndReleaseSonatypeStagingRepository
+          arguments: check reckonTagPush publishToSonatype closeAndReleaseSonatypeStagingRepository -Preckon.stage=${{ inputs.stage }}
         env:
           MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
           MAVEN_PASSWORD: ${{ secrets.OSSRH_TOKEN }}
           PGP_SECRET: ${{ secrets.PGP_SECRET }}
           PGP_PASSPHRASE: ${{ secrets.PGP_PASSPHRASE }}
+      - name: Publish Test Report
+        uses: mikepenz/action-junit-report@v3
+        if: always() # always run even if the previous step fails
+        with:
+          report_paths: '**/build/test-results/test/TEST-*.xml'
+          include_passed: true
+      - name: Create Release on GitHub
+        uses: softprops/action-gh-release@v1
+        with:
+          name: ${{steps.retrieve_version.outputs.VERSION_NAME}}
+          tag_name: ${{steps.retrieve_version.outputs.VERSION_NAME}}
+          generate_release_notes: true
+          append_body: true

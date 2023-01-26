@@ -2,7 +2,7 @@ package io.cloudflight.cleancode.archunit.utils
 
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
-import javax.persistence.Entity
+import jakarta.persistence.Entity
 
 class KotlinUtilsTest {
 

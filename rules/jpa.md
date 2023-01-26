@@ -2,7 +2,7 @@
 
 ## Entity Validation via JSR 303 annotations
 
-While you may use `@javax.persistence.Column` to influence constraints on the database like Nullability or maximum
+While you may use `@jakarta.persistence.Column` to influence constraints on the database like Nullability or maximum
 length of column, it is better to use JSR 303 annotations here, as Hibernate checks this already in its validator
 implementation before attempting to insert to the database. You also get better validation errors then at runtime.
 See [this article](https://www.baeldung.com/hibernate-notnull-vs-nullable) for more information.
@@ -39,7 +39,7 @@ See more details in the next chapters:
 ### Use @NotNull instead of @Column(nullable=false)
 <sup>`Rule-ID: jpa.entities-not-null-instead-of-nullable`</sup>
 
-Use `@javax.validation.NotNull` instead of `@Column(nullable=false`) to express that a column must not be null.
+Use `@jakarta.validation.NotNull` instead of `@Column(nullable=false`) to express that a column must not be null.
 
 Be aware that if your field is used inside a Kotlin constructor, you need to prefix the annotation with `@field:`
 as listed here:
@@ -60,7 +60,7 @@ class Project(
 ### Use @Size instead of @Column(length=...)
 <sup>`Rule-ID: jpa.entities-size-instead-of-length`</sup>
 
-Use `@javax.validation.Size(max = 30)` instead of `@Column(length=30)` to express the maximum length of a column.
+Use `@jakarta.validation.Size(max = 30)` instead of `@Column(length=30)` to express the maximum length of a column.
 
 Be aware that if your field is used inside a Kotlin constructor, you need to prefix the annotation with `@field:`
 as listed here:
@@ -107,7 +107,7 @@ class MyEntity {
 
 As you see here, the field `country` is nullable in Kotlin, whereas the field 'name' is not. Unfortunately,
 this null-check is not reflected to the database, that is why you should add that explicitely with a
-`@javax.validation.constraints.NotNull` annotation as follows:
+`@jakarta.validation.constraints.NotNull` annotation as follows:
 
 ````kotlin
 @Entity

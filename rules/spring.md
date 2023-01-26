@@ -111,13 +111,13 @@ you are only reading from the database (and not writing), consider to use `@Tran
 <sup>`Rule-ID: spring.tx-do-not-throw-exceptions`</sup>
 
 By default, only `RuntimeException` triggers a rollback of the current transaction, see
-[declarative rolling back](https://docs.spring.io/spring/docs/5.2.3.RELEASE/spring-framework-reference/data-access.html#transaction-declarative-rolling-back).
+[declarative rolling back](https://docs.spring.io/spring-framework/docs/current/reference/html/data-access.html#transaction-declarative-rolling-back).
 
-<a id="tx-no-javax-transactions-transactional-annotations"></a>
-### @Transactional from javax.transactional.Transactional should not be used
-<sup>`Rule-ID: spring.tx-no-javax-transactions-transactional-annotations`</sup>
+<a id="tx-no-jakarta-transactions-transactional-annotations"></a>
+### @Transactional from jakarta.transactional.Transactional should not be used
+<sup>`Rule-ID: spring.tx-no-jakarta-transactions-transactional-annotations`</sup>
 
-The Spring @Transactional annotation has more options than the javax @Transactional annotation and hence should be preferred.
+The Spring @Transactional annotation has more options than the jakarta @Transactional annotation and hence should be preferred.
 
 ## Spring Web
 
