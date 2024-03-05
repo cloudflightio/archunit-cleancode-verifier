@@ -1,12 +1,12 @@
 [versions]
 
-junit = "5.8.2"
-spring = "6.0.3"
-springboot = "3.0.2"
-springdata = "3.0.0"
+junit = "5.10.1"
+spring = "6.1.4"
+springboot = "3.2.3"
+springdata = "3.2.3"
 
 [libraries]
-archunit-junit5 = { module = "com.tngtech.archunit:archunit-junit5", version = "1.0.1" }
+archunit-junit5 = { module = "com.tngtech.archunit:archunit-junit5", version = "1.2.1" }
 
 jakarta-persistence-api = { module = "jakarta.persistence:jakarta.persistence-api", version = "3.1.0" }
 jakarta-validation-api = { module = "jakarta.validation:jakarta.validation-api", version = "3.0.2" }
@@ -14,9 +14,9 @@ jakarta-transaction-api = { module = "jakarta.transaction:jakarta.transaction-ap
 
 junit = { module = "org.junit.jupiter:junit-jupiter-engine", version.ref = "junit" }
 junit-params = { module = "org.junit.jupiter:junit-jupiter-params", version = "junit" }
-assertj = { module = "org.assertj:assertj-core", version = "3.23.1" }
+assertj = { module = "org.assertj:assertj-core", version = "3.25.3" }
 
-kotlin-logging = { module = "io.github.microutils:kotlin-logging", version = "1.7.9" }
+kotlin-logging = { module = "io.github.microutils:kotlin-logging", version = "3.0.5" }
 
 spring-context = { module = "org.springframework:spring-context", version.ref = "spring" }
 spring-tx = { module = "org.springframework:spring-tx", version.ref = "spring" }

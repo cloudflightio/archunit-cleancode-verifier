@@ -1,5 +1,5 @@
 plugins {
-    id("io.cloudflight.autoconfigure-settings") version "0.9.1"
+    id("io.cloudflight.autoconfigure-settings") version "1.1.1"
 }
 
 rootProject.name = "archunit-cleancode-verifier"
