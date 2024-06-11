@@ -63,6 +63,7 @@ internal class KotlinEntityNullableCondition :
         findAnnotation<Id>(memberProperty) { false }?.let { nullable = it }
         findAnnotation<GeneratedValue>(memberProperty) { nullableIfNotTypeLong(memberProperty) }?.let { nullable = it }
         findAnnotation<ManyToOne>(memberProperty) { manyToOne -> manyToOne.optional }?.let { nullable = it }
+        findAnnotation<OneToOne>(memberProperty) { oneToOne -> oneToOne.optional }?.let { nullable = it }
         return nullable
     }
 
